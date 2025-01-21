@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /*body {
+            font-family: 'Roboto', sans-serif;
+            background: #f6f9fa;
+            color: #333;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }*/
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #f6f9fa;
+            color: #333;
+            margin: 0;
+            min-height: 100vh;
+            padding-top: 70px; /* To avoid overlap with navbar */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background-color: #ffffff;
+            height: 70px;
+            position: fixed; /* Fix navbar at the top */
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000; /* Ensure navbar stays on top */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: #00aaff;
+        }
+
+        .navbar-nav .nav-link {
+            color: #333333;
+            font-weight: 500;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            background-color: #00d1b2;
+            color: #ffffff;
+            border-radius: 5px;
+        }
+
+        .profile-container {
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 90%;
+            max-width: 800px;
+            animation: fadeIn 1.2s ease-in-out;
+        }
+
+
+        .profile-header {
+            background: linear-gradient(to right, #00c6ff, #0072ff);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            border-bottom: 5px solid #00aaff;
+        }
+
+        .profile-header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        .profile-body {
+            padding: 2rem;
+        }
+
+        .profile-info {
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-info i {
+            color: #0072ff;
+            margin-right: 10px;
+        }
+
+        .profile-info p {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        .rating-container {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .rating-container .stars {
+            color: #f8d42c;
+            font-size: 1.5rem;
+        }
+
+        .animated-btn {
+            background-color: #00aaff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .animated-btn:hover {
+            background-color: #0072ff;
+            transform: scale(1.1);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* Animation du modal */
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-content {
+            background: #fdfdff;
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            animation: modalFadeIn 0.4s ease-out;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+            color: white;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            text-align: center;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .modal-footer {
+            background: #f6f9fa;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+        }
+
+        /* Champs du formulaire */
+        .form-label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .form-control {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 0.6rem 0.75rem;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .form-control:focus {
+            border-color: #0072ff;
+            box-shadow: 0 0 8px rgba(0, 114, 255, 0.3);
+            outline: none;
+        }
+
+        /* Boutons */
+        .btn-primary {
+            background-color: #0072ff;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            font-weight: bold;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .btn-primary:hover {
+            background-color: #005bb5;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 114, 255, 0.3);
+        }
+
+        .btn-secondary {
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .btn-secondary:hover {
+            background-color: #ddd;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+
+<!-- Inclure la Navbar -->
+<div th:replace="~{fragments :: header}"></div>
+
+
+<div class="profile-container">
+    <!-- Profile Header -->
+    <div class="profile-header">
+        <h1><i class="fas fa-user-circle"></i> User Profile</h1>
+        <p>Welcome, <span th:text="${loggedInUser.firstName + ' ' + loggedInUser.lastName}"></span>!</p>
+    </div>
+
+    <!-- Profile Body -->
+    <div class="profile-body">
+        <!-- Personal Info -->
+        <div class="profile-info">
+            <p><i class="fas fa-envelope"></i>Email: <span th:text="${loggedInUser.email}"></span></p>
+        </div>
+        <div class="profile-info">
+            <p><i class="fas fa-phone"></i>Phone Number: <span th:text="${loggedInUser.phoneNumber}"></span></p>
+        </div>
+        <div class="profile-info">
+            <p><i class="fas fa-star"></i>Average Rating: <span th:text="${loggedInUser.averageRating}"></span></p>
+        </div>
+
+        <!-- User Rides and Reservations -->
+        <div class="profile-info">
+            <p><i class="fas fa-car"></i>Total Rides: <span th:text="${#lists.size(loggedInUser.rides)}"></span></p>
+        </div>
+        <div class="profile-info">
+            <p><i class="fas fa-ticket-alt"></i>Reservations: <span th:text="${#lists.size(loggedInUser.reservations)}"></span></p>
+        </div>
+        <!-- Button Edit Profile -->
+        <div class="text-center mt-4">
+            <button class="animated-btn" data-bs-toggle="modal" data-bs-target="#editProfileModal">Edit Profile</button>
+        </div>
+
+        <!-- Modal Edit Profile -->
+        <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form th:action="@{/profile/update}" method="post">
+                        <div class="modal-body">
+                            <!-- First Name -->
+                            <div class="mb-3">
+                                <label for="firstName" class="form-label">First Name</label>
+                                <input type="text" id="firstName" name="firstName" class="form-control" placeholder="First Name"
+                                       th:placeholder="${loggedInUser.firstName}" required>
+                            </div>
+
+                            <!-- Last Name -->
+                            <div class="mb-3">
+                                <label for="lastName" class="form-label">Last Name</label>
+                                <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Last Name"
+                                       th:placeholder="${loggedInUser.lastName}" required>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" id="email" name="email" class="form-control" placeholder="Email"
+                                       th:placeholder="${loggedInUser.email}" required>
+                            </div>
+
+                            <!-- Phone Number -->
+                            <div class="mb-3">
+                                <label for="phoneNumber" class="form-label">Phone Number</label>
+                                <input type="text" id="phoneNumber" name="phoneNumber" class="form-control"
+                                       placeholder="Phone Number" th:placeholder="${loggedInUser.phoneNumber}" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

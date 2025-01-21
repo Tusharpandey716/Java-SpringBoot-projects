@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarPooling</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Lien vers Google Fonts pour Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Lien vers Font Awesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Ajouter le CSS de Swiper -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <style>
+        /* Global styles */
+        body {
+            font-family: Poppins, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /*navbar*/
+        .navbar {
+            background-color: #ffffff; /* Fond blanc pour la navbar */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre légère sous la navbar */
+            border-bottom: 1px solid #e0e0e0; /* Ligne fine et discrète sous la navbar */
+        }
+        .navbar-brand {
+            font-weight: bold;
+            color: #00aaff; /* Bleu clair pour la marque */
+            font-size: 1.5rem;
+        }
+
+        .navbar-brand i {
+            color: #00aaff; /* Icône de la marque en bleu clair */
+            margin-right: 8px;
+        }
+
+        .navbar-nav .nav-link {
+            color: #333333; /* Texte des liens en gris foncé */
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+        }
+        .navbar-nav .nav-link:hover {
+            background-color: #00d1b2; /* Survol turquoise */
+            border-radius: 5px; /* Coins arrondis */
+            color: white; /* Texte en blanc au survol */
+        }
+
+        .dropdown-menu {
+            background-color: #f8f9fa; /* Fond clair */
+            border: none; /* Retire la bordure */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre légère */
+        }
+
+        .dropdown-menu .nav-link {
+            color: #333;
+        }
+        .dropdown-menu .nav-link:hover {
+            background-color: #00aaff; /* Survol bleu clair */
+            color: white;
+        }
+
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .search-bar button {
+            background-color: #02b3ba;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .main-banner {
+            text-align: center;
+            padding: 100px 20px;
+            background: url('https://www.cc-paysdepontchateau.fr/medias/2022/04/Bannie%CC%80re-covoiturage.png') no-repeat center center/cover;
+            color: white;
+            height: 350px;
+        }
+
+        .main-banner h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .main-banner p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .main-banner button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #02b3ba;
+            color: white;
+            cursor: pointer;
+        }
+
+        .main-banner button:hover {
+            background-color: #02b3ba;
+        }
+
+        /* Content section styles */
+        .content-section {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px auto;
+            max-width: 1200px;
+        }
+
+        .content-card {
+            flex: 1;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            margin: 10px;
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .content-card:hover {
+            transform: scale(1.05);
+        }
+
+        .content-card h3 {
+            margin-bottom: 10px;
+        }
+
+        .content-card p {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .content-card button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            font-size: 14px;
+            background-color: #fba42e;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .content-card button:hover {
+            background-color: #02b3ba;
+        }
+
+        .btn {
+            font-size: 20px;
+            font-family: "Times New Roman", Georgia, serif;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .circle-icon {
+            background-color: white;
+            color: #02b3ba;
+            border-radius: 50%;
+            padding: 5px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Reviews Section */
+        .reviews-section {
+            margin: 50px auto;
+            background-color: #f8f9fa;
+            padding: 30px 0;
+            border-radius: 10px;
+        }
+
+        .review-card {
+            background: #ffffff;
+            border-radius: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .review-card .circle-icon {
+            background-color: #02b3ba;
+            color: #ffffff;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .review-card .stars i {
+            font-size: 18px;
+        }
+
+    </style>
+</head>
+<body>
+<!-- Inclure la Navbar -->
+<div th:replace="~{fragments :: header}"></div>
+
+
+<!-- Main Banner -->
+<section class="main-banner">
+</section>
+
+<!-- Features Section -->
+<section class="content-section">
+    <div class="content-card">
+        <h3>Trust who you travel with</h3>
+        <p>Check reviews, profiles, and IDs to know who you’re traveling with.</p>
+        <button onclick="location.href='/AllUsers'">View Drivers</button>
+    </div>
+    <div class="content-card">
+        <h3>Scroll, click, tap and go!</h3>
+        <p>Book a ride in just a few clicks using our simple and secure platform.</p>
+        <button onclick="location.href='/searchRides'">Learn More</button>
+    </div>
+</section>
+
+<<!-- User Reviews Section avec Swiper -->
+<section class="reviews-section">
+    <div class="container mt-5">
+        <h2 class="text-center mb-4" style="color: #333;">What our users say</h2>
+        <div id="reviewsCarousel" class="carousel slide" data-bs-ride="carousel">
+            <!-- Indicators -->
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#reviewsCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#reviewsCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#reviewsCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+
+            <!-- Carousel Inner -->
+            <div class="carousel-inner">
+                <!-- Review Card 1 -->
+                <div class="carousel-item active">
+                    <div class="review-card text-center p-4 shadow-sm">
+                        <div class="circle-icon mb-3">
+                            <i class="fas fa-user-circle fa-3x"></i>
+                        </div>
+                        <h5 class="fw-bold">Fattoum Mhadhbi</h5>
+                        <p>"Fantastic experience! The platform is easy to use, and I always find reliable rides."</p>
+                        <div class="stars mb-2">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star-half-alt text-warning"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review Card 2 -->
+                <div class="carousel-item">
+                    <div class="review-card text-center p-4 shadow-sm">
+                        <div class="circle-icon mb-3">
+                            <i class="fas fa-user-circle fa-3x"></i>
+                        </div>
+                        <h5 class="fw-bold">Mayssa ch</h5>
+                        <p>"Very convenient and safe. I use it regularly for my daily commutes. Highly recommended!"</p>
+                        <div class="stars mb-2">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review Card 3 -->
+                <div class="carousel-item">
+                    <div class="review-card text-center p-4 shadow-sm">
+                        <div class="circle-icon mb-3">
+                            <i class="fas fa-user-circle fa-3x"></i>
+                        </div>
+                        <h5 class="fw-bold">Ele Ben Ameur</h5>
+                        <p>"The best carpooling app out there! Great community and excellent service."</p>
+                        <div class="stars mb-2">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="far fa-star text-warning"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#reviewsCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#reviewsCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</section>
+
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+<!-- Ajouter le JS de Swiper -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script>
+    // Initialiser Swiper
+    const swiper = new Swiper('.swiper', {
+        loop: true, // Boucle infinie
+        autoplay: {
+            delay: 3000, // Délai entre les slides (en millisecondes)
+            disableOnInteraction: false, // Continuer même après une interaction
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        slidesPerView: 1, // Nombre de cartes visibles
+        spaceBetween: 20, // Espacement entre les slides
+    });
+</script>
+<script>
+    var carousel = document.querySelector('#reviewsCarousel');
+    var carouselInstance = new bootstrap.Carousel(carousel, {
+        interval: 3000, // Temps entre les slides (5000ms = 5 secondes)
+        ride: 'carousel'
+    });
+</script>
+
+</body>
+</html>
